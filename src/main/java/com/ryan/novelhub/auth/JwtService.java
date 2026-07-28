@@ -47,6 +47,18 @@ public class JwtService {
         return extractAllClaims(token).get("userId", Long.class);
     }
 
+    public String extractRole(String token){
+        return extractClaim(token, Claims::getSubject);
+    }
+
+    public boolean isTokenValid(String token){
+        try {
+            Claims claims = extractAllClaims(token);
+            return claims.getExpiration().after(new Date());
+        } catch (Exception e){
+            return false;
+        }
+    }
     private <T> T extractClaim(String token, Function<Claims, T> resolver){
         Claims claims = extractAllClaims(token);
         return resolver.apply(claims);
