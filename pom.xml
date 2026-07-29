@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.ryan</groupId>
-    <artifactId>novelhub</artifactId>
+    <artifactId>mangahub</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>novelhub</name>
-    <description>novelhub</description>
+    <name>mangahub</name>
+    <description>mangahub</description>
     <url/>
     <licenses>
         <license/>
