@@ -26,9 +26,20 @@ public class GlobalExceptionHandler {
         return build(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
+    @ExceptionHandler({
+            UserNotFoundException.class,
+            com.ryan.mangahub.manga.exception.MangaNotFoundException.class,
+            com.ryan.mangahub.chapter.exception.ChapterNotFoundException.class,
+            com.ryan.mangahub.chapterpage.exception.ChapterPageNotFoundException.class,
+            com.ryan.mangahub.genre.exception.GenreNotFoundException.class
+    })
     public ResponseEntity<Map<String, Object>> handleNotFound(RuntimeException ex) {
         return build(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+    public ResponseEntity<Map<String, Object>> handleForbidden(org.springframework.security.access.AccessDeniedException ex) {
+        return build(HttpStatus.FORBIDDEN, ex.getMessage());
     }
 
     private ResponseEntity<Map<String, Object>> build(HttpStatus status, String message) {
