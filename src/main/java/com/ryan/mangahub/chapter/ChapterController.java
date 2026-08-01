@@ -39,7 +39,8 @@ public class ChapterController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ChapterResponse> update(@PathVariable Long id,
+    public ResponseEntity<ChapterResponse> update(@PathVariable Long mangaId,
+                                                  @PathVariable Long id,
                                                   @RequestBody ChapterRequest request,
                                                   Authentication authentication) {
         Long userId = (Long) authentication.getPrincipal();
@@ -48,7 +49,8 @@ public class ChapterController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id,
+    public ResponseEntity<Void> delete(@PathVariable Long mangaId,
+                                       @PathVariable Long id,
                                        Authentication authentication) {
         Long userId = (Long) authentication.getPrincipal();
         chapterService.deleteChapter(id, userId);
