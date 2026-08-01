@@ -1,9 +1,12 @@
 package com.ryan.mangahub.manga;
 
+import com.ryan.mangahub.genre.Genre;
 import com.ryan.mangahub.user.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "mangas")
@@ -29,6 +32,14 @@ public class Manga {
 
     @Column(name = "view_count", nullable = false)
     private Long viewCount = 0L;
+
+    @ManyToMany
+    @JoinTable(
+            name = "manga_genres",
+            joinColumns = @JoinColumn(name = "manga_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private Set<Genre> genres = new HashSet<>();
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -85,6 +96,9 @@ public class Manga {
     }
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+    public Set<Genre> getGenres() {
+        return genres;
     }
 
     // Setter
