@@ -34,6 +34,4 @@ public interface MangaRepository extends JpaRepository<Manga, Long> {
             FROM Manga m 
             ORDER BY m.viewCount DESC""")
     List<Manga> findTopByViews();
-
-    MangaResponse from(Manga manga);
 }
