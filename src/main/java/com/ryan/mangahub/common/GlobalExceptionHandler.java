@@ -4,6 +4,7 @@ import com.ryan.mangahub.auth.exception.InvalidCredentialsException;
 import com.ryan.mangahub.user.exception.EmailAlreadyExistsException;
 import com.ryan.mangahub.user.exception.UserNotFoundException;
 import com.ryan.mangahub.user.exception.UsernameAlreadyExistsException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,6 +16,12 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, Object>> handleDataIntegrity(DataIntegrityViolationException ex) {
+        return build(HttpStatus.CONFLICT,
+                "Data already exists or violates a constraint.");
+    }
 
     @ExceptionHandler({UsernameAlreadyExistsException.class, EmailAlreadyExistsException.class})
     public ResponseEntity<Map<String, Object>> handleConflict(RuntimeException ex) {
@@ -50,6 +57,7 @@ public class GlobalExceptionHandler {
                 "message", message
         ));
     }
+    
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
         String message = ex.getBindingResult().getFieldErrors().stream()
