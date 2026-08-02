@@ -49,7 +49,7 @@ public class MangaService {
         Manga manga = mangaRepository.findById(id)
                 .orElseThrow(() -> new MangaNotFoundException(id));
         if (!manga.getUploadedBy().getId().equals(userId)) {
-            throw new RuntimeException("You don't own this manga");
+            throw new AccessDeniedException("You don't own this manga");
         }
         manga.setTitle(request.title());
         manga.setDescription(request.description());
