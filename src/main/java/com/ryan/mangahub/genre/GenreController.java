@@ -4,6 +4,7 @@ import com.ryan.mangahub.genre.dto.GenreRequest;
 import com.ryan.mangahub.genre.dto.GenreResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,17 +31,20 @@ public class GenreController {
         return ResponseEntity.ok(genreService.getById(id));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MODERATOR')")
     @PostMapping("/genre")
     public ResponseEntity<GenreResponse> create(@RequestBody GenreRequest request) {
         GenreResponse response = genreService.createGenre(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MODERATOR')")
     @PutMapping("/genre/{id}")
     public ResponseEntity<GenreResponse> update(@PathVariable Long id, @RequestBody GenreRequest request) {
         return ResponseEntity.ok(genreService.updateGenre(id, request));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MODERATOR')")
     @DeleteMapping("/genre/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         genreService.deleteGenre(id);
