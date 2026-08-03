@@ -7,6 +7,8 @@ import com.ryan.mangahub.user.Role;
 import com.ryan.mangahub.user.User;
 import com.ryan.mangahub.user.UserRepository;
 import com.ryan.mangahub.user.exception.UserNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -28,23 +30,19 @@ public class MangaService {
         return MangaResponse.from(manga);
     }
 
-    public List<MangaResponse> getAll() {
-        return mangaRepository.findAll()
-                .stream()
-                .map(MangaResponse::from)
-                .toList();
+    public Page<MangaResponse> getAll(Pageable pageable) {
+        return mangaRepository.findAll(pageable)
+                .map(MangaResponse::from);
     }
 
     public MangaResponse createManga(MangaRequest request, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-        if (user.getRole() != Role.AUTHOR) {
-            throw new AccessDeniedException("Only Author can create manga");
-        }
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+
         Manga manga = new Manga(request.title(), request.description(), request.coverUrl(), user);
         mangaRepository.save(manga);
         return MangaResponse.from(manga);
     }
-
     public MangaResponse updateManga(Long id, MangaRequest request, Long userId) {
         Manga manga = mangaRepository.findById(id)
                 .orElseThrow(() -> new MangaNotFoundException(id));
