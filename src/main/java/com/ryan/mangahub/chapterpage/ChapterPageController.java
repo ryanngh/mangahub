@@ -2,6 +2,7 @@ package com.ryan.mangahub.chapterpage;
 
 import com.ryan.mangahub.chapterpage.dto.ChapterPageRequest;
 import com.ryan.mangahub.chapterpage.dto.ChapterPageResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -26,7 +27,7 @@ public class ChapterPageController {
 
     @PostMapping
     public ResponseEntity<ChapterPageResponse> createChapterPage(@PathVariable Long chapterId,
-                                                                 @RequestBody ChapterPageRequest request,
+                                                                 @Valid @RequestBody ChapterPageRequest request,
                                                                  Authentication authentication) {
         Long userId = (Long) authentication.getPrincipal();
         ChapterPageResponse response = chapterPageService.createPage(chapterId, request, userId);
@@ -34,7 +35,7 @@ public class ChapterPageController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ChapterPageResponse> updatePage(@PathVariable Long chapterId, @PathVariable Long id, @RequestBody ChapterPageRequest request, Authentication authentication) {
+    public ResponseEntity<ChapterPageResponse> updatePage(@PathVariable Long chapterId, @PathVariable Long id, @Valid @RequestBody ChapterPageRequest request, Authentication authentication) {
         Long userId = (Long) authentication.getPrincipal();
         ChapterPageResponse response = chapterPageService.updatePage(id, request, userId);
         return ResponseEntity.ok(response);
