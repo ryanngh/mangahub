@@ -3,9 +3,6 @@ package com.ryan.mangahub.genre;
 import com.ryan.mangahub.genre.dto.GenreRequest;
 import com.ryan.mangahub.genre.dto.GenreResponse;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,10 +23,8 @@ public class GenreController {
     // === Genre CRUD: /genre ===
 
     @GetMapping("/genre")
-    public ResponseEntity<Page<GenreResponse>> getAll(
-            @PageableDefault(size = 50, sort = "name") Pageable pageable
-    ) {
-        return ResponseEntity.ok(genreService.getAll(pageable));
+    public ResponseEntity<List<GenreResponse>> getAll() {
+        return ResponseEntity.ok(genreService.getAll());
     }
 
     @GetMapping("/genre/{id}")

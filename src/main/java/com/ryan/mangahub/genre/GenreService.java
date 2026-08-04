@@ -6,8 +6,6 @@ import com.ryan.mangahub.genre.exception.GenreNotFoundException;
 import com.ryan.mangahub.manga.Manga;
 import com.ryan.mangahub.manga.MangaRepository;
 import com.ryan.mangahub.manga.exception.MangaNotFoundException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +23,11 @@ public class GenreService {
 
     // === Genre CRUD ===
 
-    public Page<GenreResponse> getAll(Pageable pageable) {
-        return genreRepository.findAll(pageable)
-                .map(GenreResponse::from);
+    public List<GenreResponse> getAll() {
+        return genreRepository.findAll()
+                .stream()
+                .map(GenreResponse::from)
+                .toList();
     }
 
     public GenreResponse getById(Long id) {
