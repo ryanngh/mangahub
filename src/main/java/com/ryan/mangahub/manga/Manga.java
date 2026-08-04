@@ -3,6 +3,7 @@ package com.ryan.mangahub.manga;
 import com.ryan.mangahub.genre.Genre;
 import com.ryan.mangahub.user.User;
 import jakarta.persistence.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -39,6 +40,7 @@ public class Manga {
             joinColumns = @JoinColumn(name = "manga_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
+    @BatchSize(size = 20)
     private Set<Genre> genres = new HashSet<>();
 
     @Column(name = "created_at", nullable = false, updatable = false)

@@ -7,8 +7,8 @@ import com.ryan.mangahub.user.Role;
 import com.ryan.mangahub.user.User;
 import com.ryan.mangahub.user.UserRepository;
 import com.ryan.mangahub.user.exception.UserNotFoundException;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +30,8 @@ public class MangaService {
         return MangaResponse.from(manga);
     }
 
-    public Page<MangaResponse> getAll(Pageable pageable) {
-        return mangaRepository.findAll(pageable)
+    public Slice<MangaResponse> getAll(Pageable pageable) {
+        return mangaRepository.findAllBy(pageable)
                 .map(MangaResponse::from);
     }
 

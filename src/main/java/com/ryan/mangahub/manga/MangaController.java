@@ -1,10 +1,11 @@
 package com.ryan.mangahub.manga;
 
+import com.ryan.mangahub.common.dto.SliceResponse;
 import com.ryan.mangahub.manga.dto.MangaRequest;
 import com.ryan.mangahub.manga.dto.MangaResponse;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,10 +25,11 @@ public class MangaController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<MangaResponse>> getAll(
+    public ResponseEntity<SliceResponse<MangaResponse>> getAll(
             @PageableDefault(size = 20, sort = "id") Pageable pageable
     ) {
-        return ResponseEntity.ok(mangaService.getAll(pageable));
+        Slice<MangaResponse> slice = mangaService.getAll(pageable);
+        return ResponseEntity.ok(SliceResponse.from(slice));
     }
 
     @GetMapping("/{id}")
